@@ -1,2 +1,2 @@
-# Large_Data_Analysis
-Ways and methods to deal with large data
+# Important links
+- [When your data doesnt fit in memory](https://pythonspeed.com/articles/data-doesnt-fit-in-memory/)
