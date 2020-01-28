@@ -8,6 +8,10 @@ conda install -n xx -c conda-forge vaex
 # some modules are not available in conda, install them using pip
 /Users/poudel/miniconda3/envs/xx/bin/pip install vaex-ml
 /Users/poudel/miniconda3/envs/xx/bin/pip install vaex-graphql
+
+
+# For machine learning
+conda install -n xx -c conda-forge  lightgbm xgboost catboost
 ```
 
 # Articles
