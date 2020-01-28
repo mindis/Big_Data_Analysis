@@ -5,9 +5,9 @@ https://vaex.readthedocs.io/en/latest/installing.html
 conda install -n xx -c conda-forge vaex
 
 # Note: we may also need PyQt5
-
-# same but detailed sub parts
-conda install -n xx -c conda-forge vaex-core vaex-viz vaex-jupyter vaex-arrow vaex-server vaex-ui vaex-hdf5 vaex-astro vaex-distributed
+# some modules are not available in conda, install them using pip
+/Users/poudel/miniconda3/envs/xx/bin/pip install vaex-ml
+/Users/poudel/miniconda3/envs/xx/bin/pip install vaex-graphql
 ```
 
 # Articles
