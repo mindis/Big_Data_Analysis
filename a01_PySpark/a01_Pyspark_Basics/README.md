@@ -10,75 +10,88 @@ Table of Contents
 
 # Caveats
 - pyspark sdf does not have max() min() like functions, we need to use `agg`.
+- NULL and NAN are different things.
+```python
+Good: spark.sql("select * from MovieTheaters where isnan(Movie)").show()
+Good: spark.sql("""select * from MovieTheaters where Movie = 'NaN' """).show()
+
+Bad: sdft.filter(sdft.Movie.isNull()).show() # fails, gives empty result
+Bad: sdft.where(F.isnull('Movie')).show() # fails, gives empty result
+Bad: spark.sql("select * from MovieTheaters where Movie is null").show()
+```
 
 # Some basics
 - https://spark.apache.org/docs/latest/api/python/pyspark.sql.html
 ```python
 # dataframes
-df1 = spark.createDataFrame(
+sdf1 = spark.createDataFrame(
         [("a", 1), ("a", 1), ("a", 1), ("a", 2), ("b",  3), ("c", 4)], ["C1", "C2"])
-df2 = spark.createDataFrame([("a", 1), ("b", 3)], ["C1", "C2"])
+sdf2 = spark.createDataFrame([("a", 1), ("b", 3)], ["C1", "C2"])
 
+# show and collect
+sdf.show()
+sdf.collect()
+sdf.collect()[0][0]
 
 # columns
-df.withColumn('age2', df.age + 2).collect()
-df.withColumnRenamed('age', 'age2').collect()
+sdf.withColumn('age2', df.age + 2)
+sdf.withColumnRenamed('age', 'age2')
 
 # sorting
-df.sort(df.age.desc()).collect()
-df.sort("age", ascending=False).collect()
-df.orderBy(df.age.desc()).collect()
-df.sort(asc("age")).collect()
-df.orderBy(["age", "name"], ascending=[0, 1]).collect()
+sdf.sort(df.age.desc())
+sdf.sort("age", ascending=False)
+sdf.orderBy(df.age.desc())
+sdf.sort(asc("age"))
+sdf.orderBy(["age", "name"], ascending=[0, 1])
 
 # properties
-df.columns
-df.count()
-df.distinct().count()
-df.describe(['age']).show()
+sdf.columns
+sdf.count()
+sdf.distinct().count()
+sdf.describe(['age'])
 
 # mixed
-df.show(truncate=3)
-df.select(df.name, df.age.between(2, 4)).show()
-df.select(df.age.cast("string").alias('ages')).collect()
-df.sample(withReplacement=True, fraction=0.5, seed=3).count()
-df.filter(df.name.contains('o')).collect() # where is alias for filter
-df.filter(df.height.isNotNull()).collect()
-df[df.name.isin("Bob", "Mike")].collect()
-df.select(df.name, F.when(df.age > 4, 1).when(df.age < 3, -1).otherwise(0)).show()
-df.na.fill({'age': 50, 'name': 'unknown'}).show()
-df.select(df.name, F.when(df.age > 3, 1).otherwise(0)).show()
-df.select(df.name).orderBy(df.name.desc_nulls_last()) # asc desc desc_nulls_first()
-df1.exceptAll(df2).show()
-df.drop('age').collect()
-df.drop_duplicates(['name', 'height']).show()
-df.crosstab(col1, col2)
-df.agg({"age": "max"}).collect()
-df.agg(F.min(df.age)).collect()
+sdf1.exceptAll(sdf2)
+sdf.show(truncate=3)
+sdf.select(sdf.name, sdf.age.between(2, 4))
+sdf.select(sdf.age.cast("string").alias('ages'))
+sdf.sample(withReplacement=True, fraction=0.5, seed=3).count()
+sdf.filter(sdf.name.contains('o')) # 'where' is alias for 'filter'
+sdf.filter(sdf.height.isNotNull()) # sdf.where(F.isnull('height')).show()
+sdf[sdf.name.isin("Bob", "Mike")]
+sdf.select(sdf.name, F.when(sdf.age > 4, 1).when(sdf.age < 3, -1).otherwise(0))
+sdf.na.fill({'age': 50, 'name': 'unknown'})
+sdf.select(sdf.name, F.when(sdf.age > 3, 1).otherwise(0))
+sdf.select(sdf.name).orderBy(sdf.name.desc_nulls_last()) # asc desc desc_nulls_first()
+sdf.drop('age')
+sdf.drop_duplicates(['name', 'height'])
+sdf.crosstab(col1, col2)
+sdf.agg({"age": "max"})
+sdf.agg(F.min(sdf.age))
 
 # strings
-df.filter(df.name.like('Al%')).collect()
-df.filter(df.name.rlike('ice$')).collect()
-df.filter(df.name.startswith('Al')).collect()
-df.select(df.name.substr(1, 3).alias("col")).collect()
-df.filter(df.name.endswith('ice')).collect()
+sdf.filter(sdf.name.like('Al%'))
+sdf.filter(sdf.name.rlike('ice$'))
+sdf.filter(sdf.name.startswith('Al'))
+sdf.select(sdf.name.substr(1, 3).alias("col"))
+sdf.filter(sdf.name.endswith('ice'))
 
 df = spark.createDataFrame([("a", 1), ("b", 2), ("c",  3)], ["Col1", "Col2"])
-df.select(df.colRegex("`(Col1)?+.+`")).show()
+sdf.select(sdf.colRegex("`(Col1)?+.+`"))
 
 ```
 
 # aggregation
 ```python
 # find max of a column
-sdfd.agg({'budget':'max'}).show()
-sdfd.agg({'budget':'max'}).collect()[0][0]
+sdf.agg({'budget':'max'})
+sdf.agg({'budget':'max'}).collect()[0][0]
 ```
 
 # apply
 ```python
 from pyspark.sql.functions import pandas_udf, PandasUDFType
-df = spark.createDataFrame(
+sdf = spark.createDataFrame(
     [(1, 1.0), (1, 2.0), (2, 3.0), (2, 5.0), (2, 10.0)],
     ("id", "v"))
 
@@ -86,7 +99,7 @@ df = spark.createDataFrame(
 def normalize(pdf):
     v = pdf.v
     return pdf.assign(v=(v - v.mean()) / v.std())
-df.groupby("id").apply(normalize).show()
+sdf.groupby("id").apply(normalize).show()
 
 ```
 
@@ -95,28 +108,28 @@ df.groupby("id").apply(normalize).show()
 from pyspark.sql.window import Window
 window_over_A = Window.partitionBy("A").orderBy("B")
 
-df.withColumn("diff", F.lead("B").over(window_over_A) – df.B).show()
+sdf.withColumn("diff", F.lead("B").over(window_over_A) – df.B).show()
 ```
 
 # filter and average
 ```python
-sdfp[['price']][sdfp.manufacturer==2].agg(_avg(_col('price'))).show()
-sdfp.select(_avg(_when(sdfp['manufacturer']==2, 
-                       sdfp['price']))
+sdf[['price']][sdf.manufacturer==2].agg(_avg(_col('price'))).show()
+sdf.select(_avg(_when(sdf['manufacturer']==2, 
+                       sdf['price']))
            ).show()
 ```
 
 # groupby
 ```python
-df.groupBy().min('age', 'height').show() # min max mean count
-df.groupBy("year").pivot("course", ["dotNET", "Java"]).sum("earnings").collect()
+sdf.groupBy().min('age', 'height').show() # min max mean count
+sdf.groupBy("year").pivot("course", ["dotNET", "Java"]).sum("earnings").collect()
 ```
 
 # intersect
 ```python
-df1 = spark.createDataFrame([(“a”, 1), (“a”, 1), (“b”, 3), (“c”, 4)], [“C1”, “C2”])
-df2 = spark.createDataFrame([(“a”, 1), (“a”, 1), (“b”, 3)], [“C1”, “C2”])
-df1.intersectAll(df2).sort("C1", "C2").show()
+sdf1 = spark.createDataFrame([(“a”, 1), (“a”, 1), (“b”, 3), (“c”, 4)], [“C1”, “C2”])
+sdf2 = spark.createDataFrame([(“a”, 1), (“a”, 1), (“b”, 3)], [“C1”, “C2”])
+sdf1.intersectAll(sdf2).sort("C1", "C2").show()
 ```
 
 # join 
@@ -124,12 +137,15 @@ df1.intersectAll(df2).sort("C1", "C2").show()
 how = inner, cross, outer, full, full_outer, left, left_outer, right, right_outer, left_semi, and left_anti.
 
 
-df.join(df2, df.name == df2.name, 'outer').select(df.name, df2.height).collect()
-df.join(df2, 'name', 'outer').select('name', 'height').collect()
-cond = [df.name == df3.name, df.age == df3.age]
-df.join(df3, cond, 'outer').select(df.name, df3.age).collect()
-df.join(df2, 'name').select(df.name, df2.height).collect()
-df.join(df4, ['name', 'age']).select(df.name, df.age).collect()
+sdf.join(sdf2, sdf.name == sdf2.name, 'outer').select(sdf.name, sdf2.height)
+
+sdf.join(sdf2, 'name', 'outer').select('name', 'height')
+
+cond = [sdf.name == sdf3.name, sdf.age == df3.age]
+sdf.join(sdf3, cond, 'outer').select(sdf.name, df3.age)
+
+sdf.join(sdf2, 'name').select(sdf.name, sdf2.height)
+sdf.join(sdf4, ['name', 'age']).select(sdf.name, sdf.age)
 
 
 # special example
@@ -164,14 +180,25 @@ window = Window.partitionBy("name")\
                .orderBy("age")\
                .rowsBetween(Window.unboundedPreceding, Window.currentRow)
 
-df.withColumn("rank", rank().over(window))\
+sdf.withColumn("rank", rank().over(window))\
   .withColumn("min", min('age').over(window)).show()
 ```
 
 # unionByName
 ```python
 
-df1 = spark.createDataFrame([[1, 2, 3]], ["col0", "col1", "col2"])
-df2 = spark.createDataFrame([[4, 5, 6]], ["col1", "col2", "col0"])
-df1.unionByName(df2).show() # union resolves columns by position as in sql, not by name
+sdf1 = spark.createDataFrame([[1, 2, 3]], ["col0", "col1", "col2"])
+sdf2 = spark.createDataFrame([[4, 5, 6]], ["col1", "col2", "col0"])
+sdf1.unionByName(sdf2).show() # union resolves columns by position as in sql, not by name
+```
+
+# when otherwise
+```python
+m = sdf.select(F.mean('price')).collect()[0][0]
+sdf.withColumn('discounted_price',
+                F.when( F.col('price') > m,
+                        F.col('price')*0.8
+                      )
+                .otherwise(F.col('price'))
+               ).show()
 ```

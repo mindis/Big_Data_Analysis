@@ -1,5 +1,6 @@
 # Pandas vs PySpark
-![](../images/pandas_vs_pyspark/multiple_cond.png)
+<img src="https://github.com/bhishanpdl/Tutorials_and_Lessons/blob/master/Tutorial_PySpark/images/pandas_vs_pyspark/multiple_cond.png" alt="alt text" width="400" height="400"> />
+
 ![](../images/pandas_vs_pyspark/lambda_func.png)
 ![](../images/pandas_vs_pyspark/summary.png)
 ![](../images/pandas_vs_pyspark/pivot.png)

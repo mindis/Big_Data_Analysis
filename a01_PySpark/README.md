@@ -84,6 +84,26 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.evaluation import ClusteringEvaluator
 ```
 
+# Basics
+```python
+1. distinct
+sdf['col'].drop_duplicates() does not work
+sdf.select('col').distinct().show()
+
+2. mean
+sdf.select('a').mean() does not work
+sdf.select(F.mean('a')).show()
+
+3. groupby mean
+pandas : df.groupby('a')['b'].mean()
+pandas : df.groupby('a').agg(mean_b=('b','mean')) # Named Aggregation
+pyspark: sdf.groupby('a').agg({'b':'mean'}).show()
+
+4. groupby mean then select
+pd : df.groupby('a')['b'].mean()[lambda x: x>150]
+spk: sdf.groupby('a').agg({'b':'mean'}).filter('avg(b)>150').show()
+```
+
 # Date Time Manipulation
 ```python
 
