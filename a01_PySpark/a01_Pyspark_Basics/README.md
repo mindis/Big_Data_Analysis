@@ -50,6 +50,13 @@ sdf.count()
 sdf.distinct().count()
 sdf.describe(['age'])
 
+# remove nans
+from pyspark.sql.functions import col
+
+df.na.drop(subset=["mycolumn"])
+df.filter(df.mycolumn.isNotNull())
+df.where(col("mycolumn").isNotNull())
+
 # mixed
 sdf1.exceptAll(sdf2)
 sdf.show(truncate=3)
