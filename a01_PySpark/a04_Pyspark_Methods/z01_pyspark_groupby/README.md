@@ -21,6 +21,7 @@ print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
 spark = pyspark.sql.SparkSession.builder.appName('bhishan').getOrCreate()
 sc = spark.sparkContext
 sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
+sqc = SQLContext(sc) # spark_df = sqc.createDataFrame(pandas_df)
 sc.setLogLevel("INFO")
 ```
 
