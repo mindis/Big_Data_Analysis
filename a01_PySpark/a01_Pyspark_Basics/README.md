@@ -208,3 +208,18 @@ sdf.withColumn('discounted_price',
                 .otherwise(F.col('price'))
                ).show()
 ```
+
+# Create new column using dictionary
+```python
+# when dict has same dtype
+df = df.withColumn('newcol',df['mycol'])
+df = df.replace(to_replace=mydict, subset=['newcol'])
+
+# when dict has different dtype eg. 'A': 0
+from itertools import chain
+from pyspark.sql.functions import create_map, lit
+
+mapping_expr = create_map([lit(x) for x in chain(*mydict.items())])
+df = df.withColumn('newcol', mapping_expr[df['mycol']])
+df.show(2)
+```
