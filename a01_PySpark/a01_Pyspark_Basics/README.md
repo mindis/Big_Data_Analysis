@@ -65,9 +65,9 @@ sdf.sample(withReplacement=True, fraction=0.5, seed=3).count()
 sdf.filter(sdf.name.contains('o')) # 'where' is alias for 'filter'
 sdf.filter(sdf.height.isNotNull()) # sdf.where(F.isnull('height')).show()
 sdf[sdf.name.isin("Bob", "Mike")]
-sdf.select(sdf.name, F.when(sdf.age > 4, 1).when(sdf.age < 3, -1).otherwise(0))
+sdf.select(sdf.name, F.when(sdf.age > 40, 1).when(sdf.age < 18, -1).otherwise(0))
 sdf.na.fill({'age': 50, 'name': 'unknown'})
-sdf.select(sdf.name, F.when(sdf.age > 3, 1).otherwise(0))
+sdf.select(sdf.name, F.when(sdf.age > 40, 1).otherwise(0))
 sdf.select(sdf.name).orderBy(sdf.name.desc_nulls_last()) # asc desc desc_nulls_first()
 sdf.drop('age')
 sdf.drop_duplicates(['name', 'height'])
