@@ -57,7 +57,7 @@ df.filter(df.mycolumn.isNotNull())
 df.where(col("mycolumn").isNotNull())
 
 # mixed
-sdf1.exceptAll(sdf2)
+sdf.exceptAll(sdf2)
 sdf.show(truncate=3)
 sdf.select(sdf.name, sdf.age.between(2, 4))
 sdf.select(sdf.age.cast("string").alias('ages'))
