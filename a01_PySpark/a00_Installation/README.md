@@ -79,11 +79,11 @@ conda install -n spk -c conda-forge dask
 - Open a jupyter notebook, select spark environment and run a test example.
 
 # Installation for Colab
-Make sure you have downloaded the correcty spark-2.4.3 file in Google drive and mounted the drive.
+- Download and mount the required folder of spark-hadoop
 ```
 %%bash
 
-export SPARK_PATH="drive/My Drive/Colab Notebooks/spark-2.4.3-bin-hadoop2.7"
+export SPARK_PATH="drive/My Drive/Colab Notebooks/Softwares/spark-3.0.0-bin-hadoop2.7"
 export PYSPARK_DRIVER_PYTHON="jupyter" 
 export PYSPARK_DRIVER_PYTHON_OPTS="notebook" 
 
