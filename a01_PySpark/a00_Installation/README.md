@@ -130,4 +130,70 @@ print("Congratulations! Your pyspark installation is successful.")
 ```
 
 # Test installation notebook
+```python
+%%capture
+# capture will not print in notebook
 
+import os
+import sys
+ENV_COLAB = 'google.colab' in sys.modules
+
+if ENV_COLAB:
+    ## mount google drive
+    from google.colab import drive
+    drive.mount('/content/drive')
+
+    ## load the data dir
+    dat_dir = 'drive/My Drive/Colab Notebooks/data/'
+    sys.path.append(dat_dir)
+
+    ## Image dir
+    img_dir = 'drive/My Drive/Colab Notebooks/images/'
+    if not os.path.isdir(img_dir): os.makedirs(img_dir)
+    sys.path.append(img_dir)
+
+    ## Output dir
+    out_dir = 'drive/My Drive/Colab Notebooks/outputs/'
+    if not os.path.isdir(out_dir): os.makedirs(out_dir)
+    sys.path.append(out_dir)
+
+    #### pyspark
+    !SPARK_PATH="drive/My Drive/Colab Notebooks/Softwares/spark-3.0.0-bin-hadoop2.7"
+    !PYSPARK_DRIVER_PYTHON="jupyter" 
+    !PYSPARK_DRIVER_PYTHON_OPTS="notebook" 
+
+    !pip install pyspark
+    !pip install koalas
+
+    #### print
+    print('Environment: Google Colaboratory.')
+
+# NOTE: If we update modules in gcolab, we need to restart runtime.
+
+#=================== next cell ========================
+import numpy as np
+import pandas as pd
+import pyspark
+from pyspark import SparkConf, SparkContext, SQLContext
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import udf # @udf("integer") def myfunc(x,y): return x - y
+from pyspark.sql import functions as F # stddev format_number date_format, dayofyear, when
+from pyspark.sql.types import StructField, StringType, IntegerType, StructType
+
+print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
+
+# setup pyspark
+spark = pyspark.sql.SparkSession.builder.appName('bhishan').getOrCreate()
+sc = spark.sparkContext
+sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
+sc.setLogLevel("INFO")
+
+# data
+data = sqlContext.createDataFrame([("Alberto", 2), ("Dakota", 2)],
+                                  ["Name", "myage"])
+
+# using selectExpr
+df = data.selectExpr("Name as name", "myage as age")
+df
+
+```
