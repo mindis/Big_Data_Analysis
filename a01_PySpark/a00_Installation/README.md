@@ -1,9 +1,17 @@
+Table of Contents
+=================
+   * [Installation for MacOS 10.15 Catalina (July 2020)](#installation-for-macos-1015-catalina-july-2020)
+      * [Install Java in MacOS](#install-java-in-macos)
+      * [Install spark-hadoop](#install-spark-hadoop)
+   * [Installation for Colab](#installation-for-colab)
+   * [Test installation script](#test-installation-script)
+   * [Test installation notebook](#test-installation-notebook)
+
 # Installation for MacOS 10.15 Catalina (July 2020)
 - Install java8
 - Install spark-hadoop
 - References
-  + https://github.com/jupyter/jupyter/issues/248
-  + https://stackoverflow.com/questions/54566362/how-to-install-java-9-10-on-mac-with-homebrew/54566494
+  + https://gi
 
 ## Install Java in MacOS
 ```bash
