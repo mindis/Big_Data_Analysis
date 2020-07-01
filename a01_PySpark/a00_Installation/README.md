@@ -34,12 +34,6 @@ java -version
 
 ```bash
 ## Date: June 30, 2020 for pyspark
-export SPARK_PATH=~/Softwares/spark-3.0.0-bin-hadoop2.7
-export PYSPARK_DRIVER_PYTHON="jupyter"
-export PYSPARK_DRIVER_PYTHON_OPTS="notebook"
-
-alias snotebook='$SPARK_PATH/bin/pyspark --master local[2]'
- 
 ## for Java (required by pyspark) June 30, 2020
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
@@ -50,7 +44,6 @@ export PYSPARK_PYTHON=/Users/poudel/miniconda3/envs/spk/bin/python
 - Source the updated bashrc
 ```bash
 source ~/.bash_profile
-ls $SPARK_PATH/bin/ # there must be pyspark binary file
 ```
 
 - If you already have old spk environment, then remove it
@@ -67,8 +60,11 @@ source activate spk
 conda install ipykernel
 python -m ipykernel install --user --name spk --display-name "Spark3.0.0"
 conda install -n spk -c conda-forge autopep8  yapf black
-conda install -n spk -c conda-forge py4j
-conda install -n spk -c conda-forge pyspark
+
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install py4j
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install pyspark
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install pandasql
+
 
 conda install -n spk -c conda-forge scikit-learn
 conda install -n spk -c conda-forge pandas pandasql pandas-profiling
@@ -82,11 +78,7 @@ conda install -n spk -c conda-forge dask
 - Download and mount the required folder of spark-hadoop
 ```
 %%bash
-
-export SPARK_PATH="drive/My Drive/Colab Notebooks/Softwares/spark-3.0.0-bin-hadoop2.7"
-export PYSPARK_DRIVER_PYTHON="jupyter" 
-export PYSPARK_DRIVER_PYTHON_OPTS="notebook" 
-
+# We dont need to downloa spark-hadoop binary, pip install works fine.
 !pip install pyspark
 !pip install koalas
 ```
@@ -139,29 +131,6 @@ import sys
 ENV_COLAB = 'google.colab' in sys.modules
 
 if ENV_COLAB:
-    ## mount google drive
-    from google.colab import drive
-    drive.mount('/content/drive')
-
-    ## load the data dir
-    dat_dir = 'drive/My Drive/Colab Notebooks/data/'
-    sys.path.append(dat_dir)
-
-    ## Image dir
-    img_dir = 'drive/My Drive/Colab Notebooks/images/'
-    if not os.path.isdir(img_dir): os.makedirs(img_dir)
-    sys.path.append(img_dir)
-
-    ## Output dir
-    out_dir = 'drive/My Drive/Colab Notebooks/outputs/'
-    if not os.path.isdir(out_dir): os.makedirs(out_dir)
-    sys.path.append(out_dir)
-
-    #### pyspark
-    !SPARK_PATH="drive/My Drive/Colab Notebooks/Softwares/spark-3.0.0-bin-hadoop2.7"
-    !PYSPARK_DRIVER_PYTHON="jupyter" 
-    !PYSPARK_DRIVER_PYTHON_OPTS="notebook" 
-
     !pip install pyspark
     !pip install koalas
 
@@ -183,7 +152,7 @@ from pyspark.sql.types import StructField, StringType, IntegerType, StructType
 print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
 
 # setup pyspark
-spark = pyspark.sql.SparkSession.builder.appName('bhishan').getOrCreate()
+spark = pyspark.sql.SparkSession.builder.appName('myApp').getOrCreate()
 sc = spark.sparkContext
 sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
 sc.setLogLevel("INFO")
