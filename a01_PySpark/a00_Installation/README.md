@@ -35,20 +35,67 @@ conda env list # make sure there is no spk
 
 - Create new miniconda env called spk
 ```bash
+# Create new env 
 conda create -n spk python=3.7
 source activate spk
-conda install ipykernel
-python -m ipykernel install --user --name spk --display-name "Spark3.0.0"
-conda install -n spk -c conda-forge autopep8  yapf black
 
+# adding new kernel to ipython
+# Dont use sudo unless required.
+conda install ipykernel  # NOTE there are TWO spk below
+python -m ipykernel install --user --name spk --display-name "Spark3"
+
+# install required packages
+conda install -n spk -c conda-forge autopep8  yapf black # needed for jupyter linting
+
+
+# use pip for pyspark
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install py4j
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install pyspark
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install pandasql
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install natsort
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
 
 
-conda install -n spk -c conda-forge scikit-learn
-conda install -n spk -c conda-forge pandas pandasql pandas-profiling
-conda install -n spk -c conda-forge dask
+# Install in given order
+conda install -n spk -c conda-forge numpy scipy matplotlib  seaborn
+conda install -n spk -c conda-forge openpyxl pytables pyarrow  pandas 
+conda install -n spk -c conda-forge pandas-datareader  pandas-profiling
+conda install -n spk -c conda-forge scikit-learn numba psutil 
+conda install -n spk -c conda-forge plotly plotly_express 
+conda install -n spk -c conda-forge shap  # shap needs psutil and numba
+conda install -n spk -c conda-forge unidecode 
+conda install -n spk -c conda-forge hyperopt
+conda install -n spk -c conda-forge optuna
+conda install -n spk -c conda-forge koalas
+conda install -n spk -c conda-forge nose pytest
+conda install -n spk -c conda-forge swifter 
+conda install -n spk -c conda-forge statsmodels
+conda install -n spk -c conda-forge 
+conda install -n spk -c conda-forge 
+
+# imblearn needs matplotlib, pandas, requests, pillow, tqdm
+ /Users/poudel/opt/miniconda3/envs/spk/bin/pip install imblearn
+
+# special installations
+/Users/poudel/opt/miniconda3/envs/spk/bin/pip install --pre nbdime
+nbdime config-git --enable --global
+
+# test it
+jupyter-notebook  a.ipynb # Kernel choose spk
+
+import pyspark
+pyspark.__version__
+
+# to remove
+conda info --envs
+conda env list
+conda remove --name spk --all
+
 
 ```
 - Go to new terminal tab (base of conda, not spk env)
