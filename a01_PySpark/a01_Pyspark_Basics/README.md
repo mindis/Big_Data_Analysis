@@ -23,9 +23,30 @@ Bad: spark.sql("select * from MovieTheaters where Movie is null").show()
 # Some basics
 - https://spark.apache.org/docs/latest/api/python/pyspark.sql.html
 ```python
-# dataframes
+# imports
+import numpy as np
+import pandas as pd
+import pyspark
+from pyspark import SparkConf, SparkContext, SQLContext
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import udf # @udf("integer") def myfunc(x,y): return x - y
+from pyspark.sql import functions as F # stddev format_number date_format, dayofyear, when
+from pyspark.sql.types import StructField, StringType, IntegerType, StructType
+
+print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
+
+# setup pyspark
+spark = pyspark.sql.SparkSession.builder.appName('bhishan').getOrCreate()
+sc = spark.sparkContext
+sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
+sc.setLogLevel("INFO")
+
+#==================== create dataframes ======================
 sdf1 = spark.createDataFrame(
-        [("a", 1), ("a", 1), ("a", 1), ("a", 2), ("b",  3), ("c", 4)], ["C1", "C2"])
+        [("a", 1), ("a", 1), ("a", 1), ("a", 2), ("b",  3), ("c", 4)],
+        ["C1", "C2"]
+        )
+
 sdf2 = spark.createDataFrame([("a", 1), ("b", 3)], ["C1", "C2"])
 
 # show and collect
@@ -48,7 +69,7 @@ sdf.orderBy(["age", "name"], ascending=[0, 1])
 sdf.columns
 sdf.count()
 sdf.distinct().count()
-sdf.describe(['age'])
+sdf.describe(['age']).show()
 
 # remove nans
 from pyspark.sql.functions import col
