@@ -1,17 +1,9 @@
-Table of Contents
-=================
-   * [Installation for MacOS 10.15 Catalina (July 2020)](#installation-for-macos-1015-catalina-july-2020)
-      * [Install Java in MacOS](#install-java-in-macos)
-      * [Install spark-hadoop](#install-spark-hadoop)
-   * [Installation for Colab](#installation-for-colab)
-   * [Test installation script](#test-installation-script)
-   * [Test installation notebook](#test-installation-notebook)
+
 
 # Installation for MacOS 10.15 Catalina (July 2020)
-- Install java8
-- Install spark-hadoop
-- References
-  + https://gi
+We need to install java. We dont need to download spark-hadoop file
+and put in the PATH. pip install pyspark will take care it itself.
+
 
 ## Install Java in MacOS
 ```bash
@@ -24,28 +16,11 @@ echo $JAVA_HOME
 
 ls /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 java -version
-```
 
-## Install spark-hadoop
-- Download the binary and put it in ~/Softwares
-  + http://spark.apache.org/downloads.html
-  + For July 2020 this is spark3.0.0 and hadoop2.7
-- Then add the path in bashrc
-
-```bash
-## Date: June 30, 2020 for pyspark
-## for Java (required by pyspark) June 30, 2020
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
-export PATH=$SPARK_HOME/bin:$PATH
-export PYSPARK_PYTHON=/Users/poudel/miniconda3/envs/spk/bin/python
-```
-
-- Source the updated bashrc
-```bash
 source ~/.bash_profile
 ```
 
+## Create new conda environment
 - If you already have old spk environment, then remove it
 ```bash
 conda env list
