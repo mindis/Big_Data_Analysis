@@ -7,6 +7,11 @@ and put in the PATH. pip install pyspark will take care it itself.
 
 ## Install Java in MacOS
 ```bash
+
+# First check if you already have java or not
+java -version
+
+# if we do not have java, install it.
 brew tap adoptopenjdk/openjdk
 brew cask install adoptopenjdk9
 
