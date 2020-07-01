@@ -53,13 +53,6 @@ conda install -n spk -c conda-forge autopep8  yapf black # needed for jupyter li
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install pyspark
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install pandasql
 /Users/poudel/opt/miniconda3/envs/spk/bin/pip install natsort
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install 
-
 
 # Install in given order
 conda install -n spk -c conda-forge numpy scipy matplotlib  seaborn
@@ -78,75 +71,19 @@ conda install -n spk -c conda-forge statsmodels
 conda install -n spk -c conda-forge 
 conda install -n spk -c conda-forge 
 
-# imblearn needs matplotlib, pandas, requests, pillow, tqdm
- /Users/poudel/opt/miniconda3/envs/spk/bin/pip install imblearn
-
-# special installations
-/Users/poudel/opt/miniconda3/envs/spk/bin/pip install --pre nbdime
-nbdime config-git --enable --global
-
-# test it
-jupyter-notebook  a.ipynb # Kernel choose spk
-
-import pyspark
-pyspark.__version__
-
-# to remove
-conda info --envs
-conda env list
-conda remove --name spk --all
-
-
 ```
 - Go to new terminal tab (base of conda, not spk env)
 - Open a jupyter notebook, select spark environment and run a test example.
 
 # Installation for Colab
 - Download and mount the required folder of spark-hadoop
-```
+```bash
 %%bash
 # We dont need to downloa spark-hadoop binary, pip install works fine.
 !pip install pyspark
 !pip install koalas
 ```
 
-
-# Test installation script
-- Note: Never forget to stop the spark session in the end.
-```python
-# Imports
-import numpy as np
-import pandas as pd
-import pyspark
-from pyspark import SparkConf, SparkContext, SQLContext
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf # @udf("integer") def myfunc(x,y): return x - y
-from pyspark.sql import functions as F # stddev format_number date_format, dayofyear, when
-from pyspark.sql.types import StructField, StringType, IntegerType, StructType
-
-print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
-
-# setup pyspark
-spark = pyspark.sql.SparkSession.builder.appName('bhishan').getOrCreate()
-sc = spark.sparkContext
-sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
-sc.setLogLevel("INFO")
-
-# data
-data = sqlContext.createDataFrame([("Alberto", 2), ("Dakota", 2)],
-                                  ["Name", "myage"])
-
-# using selectExpr
-df = data.selectExpr("Name as name", "myage as age")
-print('\n\n') # spark prints various loggin info, add some new lines.
-print(df)
-print('\n\n')
-
-# close the session
-spark.stop()
-print("Congratulations! Your pyspark installation is successful.")
-
-```
 
 # Test installation notebook
 ```python
@@ -167,29 +104,11 @@ if ENV_COLAB:
 # NOTE: If we update modules in gcolab, we need to restart runtime.
 
 #=================== next cell ========================
-import numpy as np
-import pandas as pd
 import pyspark
-from pyspark import SparkConf, SparkContext, SQLContext
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf # @udf("integer") def myfunc(x,y): return x - y
-from pyspark.sql import functions as F # stddev format_number date_format, dayofyear, when
-from pyspark.sql.types import StructField, StringType, IntegerType, StructType
-
-print([(x.__name__,x.__version__) for x in [np, pd, pyspark]])
-
-# setup pyspark
 spark = pyspark.sql.SparkSession.builder.appName('myApp').getOrCreate()
-sc = spark.sparkContext
-sqlContext = SQLContext(sc) # spark_df = sqlContext.createDataFrame(pandas_df)
-sc.setLogLevel("INFO")
+sdf = spark.createDataFrame([("a", 1), ("b", 3)],
+                            ["C1", "C2"]
+                           )
 
-# data
-data = sqlContext.createDataFrame([("Alberto", 2), ("Dakota", 2)],
-                                  ["Name", "myage"])
-
-# using selectExpr
-df = data.selectExpr("Name as name", "myage as age")
-df
-
+sdf.show()
 ```
