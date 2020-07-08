@@ -31,7 +31,7 @@ Rapids only works with tesla gpu (not tpu) and colab fails to run Rapids modules
 Needed for Rapids: NVIDIA Tesla T4  
 Allocated: NVIDIA Tesla K80  
 Note that only Rapids wants Tesla T4  but the xgboost library can use k80 gpu and run the model on
-gpu.
+gpu. In gcolab GPU allocation per user is restricted to 12 hours at a time. The GPU used is the NVIDIA Tesla K80, and once the session is complete, the user can continue using the resource by connecting to a different VM.
 
 ```
 Date: Jul 8, 2020  
