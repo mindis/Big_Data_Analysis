@@ -1,5 +1,5 @@
-# Using cudf in kaggle
-- 
+# Using cudf in kaggle (30 hours)
+- https://www.kaggle.com/cdeotte/rapids
 ```python
 # installation
 import sys
