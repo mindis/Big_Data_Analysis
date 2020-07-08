@@ -28,6 +28,10 @@ print(tips_df.groupby('size').tip_percentage.mean())
 
 All the times I have tried google colab allocated me the K80 GPU and never Tesla T4 GPU.
 Rapids only works with tesla gpu (not tpu) and colab fails to run Rapids modules such as cudf.
+Needed for Rapids: NVIDIA Tesla T4  
+Allocated: NVIDIA Tesla K80  
+Note that only Rapids wants Tesla T4  but the xgboost library can use k80 gpu and run the model on
+gpu.
 
 ```
 Date: Jul 8, 2020  
