@@ -25,6 +25,7 @@ print(tips_df.groupby('size').tip_percentage.mean())
 
 # Using cudf in colab
 - https://news.developer.nvidia.com/run-rapids-on-google-colab/
+- https://colab.research.google.com/drive/1rY7Ln6rEE1pOlfSHCYOVaqt8OvDO35J0#forceEdit=true&sandboxMode=true&scrollTo=CtNdk7PSafKP
 
 Needed for Rapids: NVIDIA Tesla T4  or P4 (architecture greater than Pascal, K80 does not work)  
 Needed for Xgboost (no relation to Rapids): It works with K80 architecture)  
@@ -40,12 +41,11 @@ Try changing runtime until you get Tesla P4 or T4. I got that in Jul 8, 2020, 12
 # if you see K80 change the runtime until you see P4.
 
 import pynvml
-
 pynvml.nvmlInit()
 handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 device_name = pynvml.nvmlDeviceGetName(handle)
 
-if device_name not in [b'Tesla T4', b'Tesla P4']:
+if device_name not in [b'Tesla T4', b'Tesla P4',b'Tesla P100']:
   raise Exception("""
     Unfortunately this instance does not have a T4 GPU.
     
@@ -78,7 +78,6 @@ import pandas as pd
 import pynvml
 import numpy as np
 import xgboost as xgb
-
 
 #load data from skl, then split it into testing and training data
 ## Load data
