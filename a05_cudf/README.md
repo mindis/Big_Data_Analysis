@@ -26,22 +26,15 @@ print(tips_df.groupby('size').tip_percentage.mean())
 # Using cudf in colab
 - https://news.developer.nvidia.com/run-rapids-on-google-colab/
 
-All the times I have tried google colab allocated me the K80 GPU and never Tesla T4 GPU.
-Rapids only works with tesla gpu (not tpu) and colab fails to run Rapids modules such as cudf.
-Needed for Rapids: NVIDIA Tesla T4  
-Allocated: NVIDIA Tesla K80  
-Note that only Rapids wants Tesla T4  but the xgboost library can use k80 gpu and run the model on
-gpu. In gcolab GPU allocation per user is restricted to 12 hours at a time. The GPU used is the NVIDIA Tesla K80, and once the session is complete, the user can continue using the resource by connecting to a different VM.
+Needed for Rapids: NVIDIA Tesla T4  or P4 (architecture greater than Pascal, K80 does not work)  
+Needed for Xgboost (no relation to Rapids): It works with K80 architecture)  
 
-```
-Date: Jul 8, 2020  
-It does not work.
+In gcolab GPU allocation per user is restricted to 12 hours at a time.
+The GPU used is the NVIDIA Tesla K80, and once the session is complete,
+the user can continue using the resource by connecting to a different VM.
 
-UserWarning: You will need a GPU with NVIDIA Pascal™ or newer architecture
-Detected GPU 0: Tesla K80
+Try changing runtime until you get Tesla P4 or T4. I got that in Jul 8, 2020, 12:28 pm.
 
-RuntimeError: after reduction step 1: cudaErrorInvalidDeviceFunction: invalid device function
-```
 
 # useful resources
 - https://github.com/rapidsai/notebooks-contrib
