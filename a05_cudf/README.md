@@ -23,5 +23,17 @@ tips_df['tip_percentage'] = tips_df['tip'] / tips_df['total_bill'] * 100
 print(tips_df.groupby('size').tip_percentage.mean())
 ```
 
+# Using cudf in colab
+  ```
+Date: Jul 8, 2020  
+It does not work.
+
+UserWarning: You will need a GPU with NVIDIA Pascal™ or newer architecture
+Detected GPU 0: Tesla K80
+
+RuntimeError: after reduction step 1: cudaErrorInvalidDeviceFunction: invalid device function
+```
+
 # useful resources
+- https://github.com/rapidsai/notebooks-contrib
 - https://www.deeplearningwizard.com/machine_learning/gpu/rapids_cudf/
