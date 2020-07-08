@@ -24,7 +24,12 @@ print(tips_df.groupby('size').tip_percentage.mean())
 ```
 
 # Using cudf in colab
-  ```
+- https://news.developer.nvidia.com/run-rapids-on-google-colab/
+
+All the times I have tried google colab allocated me the K80 GPU and never Tesla T4 GPU.
+Rapids only works with tesla gpu (not tpu) and colab fails to run Rapids modules such as cudf.
+
+```
 Date: Jul 8, 2020  
 It does not work.
 
