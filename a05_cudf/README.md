@@ -1,4 +1,4 @@
-# Using cudf in kaggle (30 hours)
+# Using cudf in kaggle (30 hours/week)
 - https://www.kaggle.com/cdeotte/rapids
 ```python
 # installation
