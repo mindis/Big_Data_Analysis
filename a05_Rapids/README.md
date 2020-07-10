@@ -1,6 +1,34 @@
 # Using cudf in kaggle (30 hours/week)
 - https://www.kaggle.com/cdeotte/rapids
+
+
+
+
+
 ```python
+!nvidia-smi
+
+
+import pynvml
+
+pynvml.nvmlInit()
+handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+device_name = pynvml.nvmlDeviceGetName(handle)
+
+if device_name not in [b'Tesla T4', b'Tesla P4']:
+  raise Exception("""
+    Unfortunately this instance does not have a T4 GPU.
+    
+    Please make sure you've configured Colab to request a GPU instance type.
+    
+    Sometimes Colab allocates a Tesla K80 instead of a T4. Resetting the instance.
+
+    If you get a K80 GPU, try Runtime -> Reset all runtimes...
+  """)
+else:
+  print('Woo! You got the right kind of GPU!', device_name)
+  
+
 # installation
 import sys
 !cp ../input/rapids/rapids.0.14.0 /opt/conda/envs/rapids.tar.gz
