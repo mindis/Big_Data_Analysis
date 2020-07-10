@@ -9,8 +9,8 @@ ENV_COLAB = 'google.colab' in sys.modules
 
 if ENV_COLAB:
     ## install modules
-    !python -m pip install dask[complete] --upgrade
-    !pip install dask-ml[complete]
+    !pip install dask[complete] --upgrade
+    !pip install dask-ml[complete] --upgrade
 
     ## print
     print('Environment: Google Colaboratory.')
