@@ -32,6 +32,7 @@ from dask.distributed import Client, LocalCluster
 from dask_ml.xgboost import XGBRegressor
 
 print([(x.__name__,x.__version__) for x in [dask, dask_ml]])
+# [('dask', '2.20.0'), ('dask_ml', '1.5.0')]
 
 # data
 SEED = 100
@@ -46,11 +47,12 @@ da_ytest = da.from_array(y_test)
 # modelling
 cluster = LocalCluster(processes=False,scheduler_port=1234)
 client = Client(cluster)
+client
 
-est = XGBRegressor(random_state=SEED)
-est.fit(da_Xtrain, da_ytrain)
+model = XGBRegressor(random_state=SEED)
+model.fit(da_Xtrain, da_ytrain)
 
-da_txpreds = est.predict(da_Xtest)
+da_txpreds = model.predict(da_Xtest)
 
 # model evaluation
 from sklearn import metrics
