@@ -149,6 +149,25 @@ def spark_df_from_pandas(pandas_df):
     return spark_df
 ```
 
+# Basic dataframe
+```python
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+import pyspark
+from pyspark.sql.types import *
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+spark = pyspark.sql.SparkSession.builder.getOrCreate()
+
+df = sns.load_dataset('tips')
+sdf = sqlContext.createDataFrame(df)
+sdf.createOrReplaceTempView("tips")
+
+spark.sql('select * from tips limit 2').show()
+```
+
 # Useful Alfred Commands
 ```
 From   : Employee = pd.read_sql("""SELECT * from Employee""", conn)
