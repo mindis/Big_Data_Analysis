@@ -12,8 +12,9 @@ python -m ipykernel install --user --name mysparknlp --display-name "Python36(my
 
 # DO NOT use ! when installing from terminal
 # this takes about an hour to install, please wait
-pip install --ignore-installed --default-timeout=100  pyspark==2.4.4  
 
+pip install --ignore-installed --default-timeout=100  pyspark==2.4.4  
+conda install -n mysparknlp -c numpy pandas
 ```
 
 
